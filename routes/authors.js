@@ -1,4 +1,3 @@
-const { query } = require('express');
 const express = require('express');
 const router = express.Router();
 const Author = require('../models/author');
@@ -34,7 +33,7 @@ router.post('/', async (req, res) => {
 
     try {
         const newAuthor = await author.save();
-        res.render('authors');
+        res.redirect('authors');
     } catch (error) {
         res.render('authors/new', {
             author: author,
