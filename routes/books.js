@@ -83,8 +83,6 @@ router.post('/', upload.single('coverImage'), async (req, res) => {
         coverImage: req.file.path
     });
 
-    console.log(req.file.path);
-    console.log(path.join(uploadPath, req.file.filename));
     try {
         const newBook = await book.save();
         res.redirect('books')

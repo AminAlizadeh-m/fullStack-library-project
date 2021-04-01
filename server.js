@@ -4,10 +4,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const app = express();
+const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const path = require('path');
 
+app.use(methodOverride('_method'));
 app.use(express.urlencoded({limit: '10mb', extended: false}));
 
 const indexRouter = require('./routes/index');
@@ -18,7 +20,7 @@ const port = process.env.PORT;
 const host = process.env.HOST;
 const dbUrl = process.env.DATABASE_URL;
 
-mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 const db = mongoose.connection;
 db.on('error', error => console.log('Database connection error : ' + error));
 db.once('open', () => console.log('Successfully connected to database!'));
