@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 
 // Get new book
 router.get('/new', async (req, res) => {
-    renderNewPage(res);
+    renderNewPage(res, new Book());
 });
 
 // Post new books
@@ -88,19 +88,44 @@ router.post('/', upload.single('coverImage'), async (req, res) => {
         res.redirect('books')
     } catch (error) {
         removeCover(req.file.path);
-        renderNewPage(res, true);
+        renderNewPage(res, book, true);
     }
 });
 
-async function renderNewPage(res, hasError = false) {
+// Get book info
+router.get('/:id', async (req, res) => {
+    const bookID = req.params.id;
+    try {
+        const book = await Book.findById(bookID).populate('author').exec();
+        res.render('books/show', {book: book});
+    } catch (error) {
+        res.redirect('/');
+    }
+});
+
+// Edit book
+router.put('/:id/edit', async (req, res) => {
+    res.send('update book (SOON:))')
+})
+
+async function renderEditPage(res, book, hasError = false) {
+    renderFormPage(res, book, 'edit', hasError);
+}
+
+async function renderNewPage(res, book, hasError = false) {
+    renderFormPage(res, book, 'new', hasError);
+}
+
+async function renderFormPage(res, book, form, hasError = false) {
     try {
         const authors = await Author.find();
         const params = {
-            authors: authors
+            authors: authors,
+            book: book
         }
         if (hasError) params.errorMessage = 'Error creating book!'
 
-        res.render('books/new', params);
+        res.render(`books/${form}`, params);
         
     } catch (error) {
         res.redirect('/books');

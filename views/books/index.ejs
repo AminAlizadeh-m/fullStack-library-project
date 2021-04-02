@@ -15,5 +15,7 @@
     <button type="submit">Search</button>
 </form>
 <% books.forEach(book => { %>
-    <img src="<%= book.coverImagePath %> " width="200" height="300">
+    <a href="/books/<%= book.id %>">
+        <img src="<%= book.coverImagePath %> " width="200" height="300">
+    </a>
 <% }) %>

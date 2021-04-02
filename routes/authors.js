@@ -53,8 +53,7 @@ router.get('/:id', async (req, res) => {
         
         res.render('authors/show', {author: author, booksByAuthor: booksByAuthor});
     } catch (error) {
-        console.log(error);
-        // res.render('authors', {errorMessage: 'error, please try again ...'});
+        res.render('authors', {errorMessage: 'error, please try again ...'});
     }
 });
 
